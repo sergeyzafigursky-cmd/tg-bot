@@ -1,24 +1,20 @@
-import os
-from aiogram import Bot, Dispatcher, executor, types
+import telebot
+import json
 
-API_TOKEN = os.getenv("API_TOKEN")
+# Завантаження конфігу
+with open("config.json", "r") as f:
+    config = json.load(f)
 
-bot = Bot(token=API_TOKEN, parse_mode="HTML")
-dp = Dispatcher(bot)
+bot = telebot.TeleBot(config["TOKEN"])
 
-@dp.message_handler(commands=['start'])
-async def start(message: types.Message):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(types.InlineKeyboardButton("🔗 Наш канал", url="https://t.me/praca_polska_europa"))
-    keyboard.add(types.InlineKeyboardButton("📲 Зв'язатись", url="https://t.me/ТВІЙ_НІК"))
+welcome_message = f"""🔥 Вітаємо у каналі 🔥
+Робота в Польщі 🇵🇱 | Вакансії для українців
+📲 Контакти для зв’язку:
+Viber / Telegram / WhatsApp: {config["CONTACT"]}
+"""
 
-    await message.answer(
-        "👋 Вітаю!\n\n"
-        "Ми – твій партнер, якому можна довіряти.\n"
-        "Робота в Польщі та Європі 🇵🇱🇪🇺\n\n"
-        "👉 Обери дію нижче:",
-        reply_markup=keyboard
-    )
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.send_message(message.chat.id, welcome_message)
 
-if __name__ == "__main__":
-    executor.start_polling(dp, skip_updates=True)
+bot.polling()
