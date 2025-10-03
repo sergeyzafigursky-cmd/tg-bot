@@ -1,7 +1,7 @@
-# praca_polska_bot
-Телеграм-бот для каналу про роботу в Польщі.
+# Telegram Bot - Контакти
 
-## Запуск
-1. Створіть `config.json` з токеном бота та контактом.
-2. Встановіть бібліотеки: `pip install -r requirements.txt`
-3. Запустіть: `python bot.py`
+## Установка
+1. Клонувати репозиторій
+2. Встановити залежності: `pip install -r requirements.txt`
+3. Замінити токен в `config.json`
+4. Запустити: `python bot.py`
