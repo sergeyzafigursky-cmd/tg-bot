@@ -1,9 +1,7 @@
 import os
-import logging
-import threading
-from aiohttp import web
+import asyncio
 from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
+from aiohttp import web
 
 # --------------------------
 # Логування
@@ -14,7 +12,8 @@ logger = logging.getLogger(__name__)
 # --------------------------
 # Токен бота (змінна середовища)
 # --------------------------
-API_TOKEN = "7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0"
+    raise SystemExit("API_TOKEN required!")
+API_TOKEN = os.getenv"7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0")
 if not API_TOKEN:
     logger.error("❌ Не знайдено токен! Вкажи API_TOKEN у Render → Environment.")
     raise SystemExit("API_TOKEN required!")
@@ -22,8 +21,8 @@ if not API_TOKEN:
 # --------------------------
 # Ініціалізація бота
 # --------------------------
-bot = Bot("7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0=API_TOKEN", parse_mode="HTML")
-dp = Dispatcher(bot)
+bot = Bot(token=API_TOKEN)
+dp = Dispatcher()
 
 # --------------------------
 # Команди
