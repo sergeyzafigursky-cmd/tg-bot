@@ -1,4 +1,4 @@
 pyTelegramBotAPI
 requests
 aiohttp
-aiogram
+aiogram==2.25.1
