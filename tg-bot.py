@@ -22,7 +22,7 @@ if not API_TOKEN:
 # --------------------------
 # Ініціалізація бота
 # --------------------------
-bot = Bot(7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0=API_TOKEN, parse_mode="HTML")
+bot = Bot("7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0=API_TOKEN", parse_mode="HTML")
 dp = Dispatcher(bot)
 
 # --------------------------
