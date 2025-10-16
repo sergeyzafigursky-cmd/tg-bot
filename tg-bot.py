@@ -21,7 +21,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     # Токен беремо зі змінної середовища
-    token = os.getenv("BOT_TOKEN")
+    token = os.getenv("7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0")
     if not token:
         logger.error("Не вказано токен у змінній BOT_TOKEN")
         return
