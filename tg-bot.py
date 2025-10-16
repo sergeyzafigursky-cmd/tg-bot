@@ -1,78 +1,36 @@
+import logging
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, ContextTypes
 import os
-import asyncio
-from aiogram import Bot, Dispatcher, types
-from aiohttp import web
 
-# --------------------------
-# Логування
-# --------------------------
-logging.basicConfig(level=logging.INFO)
+# Увімкнемо логування
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
+)
 logger = logging.getLogger(__name__)
 
-# --------------------------
-# Токен бота (змінна середовища)
-# --------------------------
-    raise SystemExit("API_TOKEN required!")
-API_TOKEN = os.getenv"7203533541:AAFs7CuSO-t1YQ4MKcN2nk8WeXgWmx1vrf0")
-if not API_TOKEN:
-    logger.error("❌ Не знайдено токен! Вкажи API_TOKEN у Render → Environment.")
-    raise SystemExit("API_TOKEN required!")
+# Хендлер команди /start
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("Перейти до каналу", url="https://t.me/praca_polska_europa")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
 
-# --------------------------
-# Ініціалізація бота
-# --------------------------
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher()
+    text = "🇵🇱 Робота в Польщі для українців\nДізнайся більше про роботу 👇"
+    await update.message.reply_text(text, reply_markup=reply_markup)
 
-# --------------------------
-# Команди
-# --------------------------
-@dp.message_handler(commands=["start"])
-async def start_cmd(message: types.Message):
-    text = (
-        "👋 Вітаю!\n\n"
-        "Актуальні пропозиції працевлаштування\n"
-        "Щоб перейти до нашої спільноти, натискай <b>/do_roboty</b>"
-    )
-    await message.answer(text)
+def main():
+    # Токен беремо зі змінної середовища
+    token = os.getenv("BOT_TOKEN")
+    if not token:
+        logger.error("Не вказано токен у змінній BOT_TOKEN")
+        return
 
-@dp.message_handler(commands=["do_roboty"])
-async def do_roboty_cmd(message: types.Message):
-    keyboard = types.InlineKeyboardMarkup()
-    keyboard.add(
-        types.InlineKeyboardButton(
-            "🔗 Перейти до каналу Praca Polska Europa",
-            url="https://t.me/praca_polska_europa"
-        )
-    )
-    await message.answer(
-        "✅ Натисни кнопку нижче, щоб перейти в наш Telegram-канал 👇",
-        reply_markup=keyboard
-    )
+    application = Application.builder().token(token).build()
+    application.add_handler(CommandHandler("start", start))
 
-# --------------------------
-# HTTP сервер для Render
-# --------------------------
-async def handle_root(request):
-    return web.Response(text="Bot is running ✅")
-
-async def handle_health(request):
-    return web.json_response({"status": "ok"})
-
-def run_webserver():
-    port = int(os.getenv("PORT", 8000))
-    app = web.Application()
-    app.router.add_get("/", handle_root)
-    app.router.add_get("/healthz", handle_health)
-    web.run_app(app, host="0.0.0.0", port=port)
-
-# --------------------------
-# Запуск polling і сервера
-# --------------------------
-def run_polling():
-    logger.info("🚀 Бот запущений (polling)...")
-    executor.start_polling(dp, skip_updates=True)
+    logger.info("Бот запущений...")
+    application.run_polling()
 
 if __name__ == "__main__":
-    threading.Thread(target=run_polling, daemon=True).start()
-    run_webserver()
+    main()
